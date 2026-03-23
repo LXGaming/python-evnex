@@ -11,7 +11,8 @@ from pycognito import Cognito
 from pydantic import HttpUrl, ValidationError
 from tenacity import retry, retry_if_not_exception_type, wait_random_exponential
 
-from evnex.errors import NotAuthorizedException
+from evnex.errors import NotAuthorizedException, RateLimitException
+from evnex.models import parse_rate_limit
 from evnex.schema.charge_points import (
     EvnexChargePoint,
     EvnexChargePointDetail,
@@ -155,6 +156,12 @@ class Evnex:
         if response.status_code == 401:
             logger.debug("Access Token likely expired, re-authenticate then retry")
             raise NotAuthorizedException()
+        if response.status_code == 429:
+            rate_limit = parse_rate_limit(response.headers)
+            logger.debug(
+                f"Hit rate limit, resets after '{rate_limit.reset if rate_limit is not None else 'Unknown'}'"
+            )
+            raise RateLimitException(rate_limit)
         if not response.is_success:
             logger.warning(
                 f"Unsuccessful request\n{response.status_code}\n{response.text}"
