@@ -138,7 +138,9 @@ class Evnex:
 
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
-        retry=retry_if_not_exception_type((ValidationError, NotAuthorizedException)),
+        retry=retry_if_not_exception_type(
+            (ValidationError, NotAuthorizedException, RateLimitException)
+        ),
     )
     async def get_user_detail(self) -> EvnexUserDetail:
         response = await self.httpx_client.get(
@@ -184,7 +186,12 @@ class Evnex:
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
         retry=retry_if_not_exception_type(
-            (ValidationError, NotAuthorizedException, HTTPStatusError)
+            (
+                ValidationError,
+                NotAuthorizedException,
+                RateLimitException,
+                HTTPStatusError,
+            )
         ),
     )
     async def get_org_charge_points(
@@ -202,7 +209,9 @@ class Evnex:
 
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
-        retry=retry_if_not_exception_type((ValidationError, NotAuthorizedException)),
+        retry=retry_if_not_exception_type(
+            (ValidationError, NotAuthorizedException, RateLimitException)
+        ),
     )
     async def get_org_insight(
         self, days: int, org_id: Optional[str] = None, tz_offset: int = 12
@@ -222,7 +231,9 @@ class Evnex:
 
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
-        retry=retry_if_not_exception_type((ValidationError, NotAuthorizedException)),
+        retry=retry_if_not_exception_type(
+            (ValidationError, NotAuthorizedException, RateLimitException)
+        ),
     )
     async def get_org_summary_status(
         self, org_id: Optional[str] = None
@@ -239,7 +250,9 @@ class Evnex:
 
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
-        retry=retry_if_not_exception_type((ValidationError, NotAuthorizedException)),
+        retry=retry_if_not_exception_type(
+            (ValidationError, NotAuthorizedException, RateLimitException)
+        ),
     )
     async def get_charge_point_detail(
         self, charge_point_id: str
@@ -259,7 +272,12 @@ class Evnex:
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
         retry=retry_if_not_exception_type(
-            (TypeError, ValidationError, NotAuthorizedException)
+            (
+                TypeError,
+                ValidationError,
+                NotAuthorizedException,
+                RateLimitException,
+            )
         ),
     )
     async def get_charge_point_detail_v3(
@@ -278,7 +296,9 @@ class Evnex:
 
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
-        retry=retry_if_not_exception_type((ValidationError, NotAuthorizedException)),
+        retry=retry_if_not_exception_type(
+            (ValidationError, NotAuthorizedException, RateLimitException)
+        ),
     )
     async def get_charge_point_solar_config(
         self, charge_point_id: str
@@ -298,7 +318,12 @@ class Evnex:
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
         retry=retry_if_not_exception_type(
-            (ValidationError, NotAuthorizedException, ReadTimeout)
+            (
+                ValidationError,
+                NotAuthorizedException,
+                RateLimitException,
+                ReadTimeout,
+            )
         ),
     )
     async def get_charge_point_override(
@@ -319,7 +344,9 @@ class Evnex:
 
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
-        retry=retry_if_not_exception_type((ValidationError, NotAuthorizedException)),
+        retry=retry_if_not_exception_type(
+            (ValidationError, NotAuthorizedException, RateLimitException)
+        ),
     )
     async def set_charge_point_override(
         self, charge_point_id: str, charge_now: bool, connector_id: int = 1
@@ -334,7 +361,9 @@ class Evnex:
 
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
-        retry=retry_if_not_exception_type((ValidationError, NotAuthorizedException)),
+        retry=retry_if_not_exception_type(
+            (ValidationError, NotAuthorizedException, RateLimitException)
+        ),
     )
     async def get_charge_point_status(
         self, charge_point_id: str
@@ -353,7 +382,9 @@ class Evnex:
 
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
-        retry=retry_if_not_exception_type((ValidationError, NotAuthorizedException)),
+        retry=retry_if_not_exception_type(
+            (ValidationError, NotAuthorizedException, RateLimitException)
+        ),
     )
     async def get_charge_point_energy_meter_reading(
         self, charge_point_id: str
@@ -372,7 +403,9 @@ class Evnex:
 
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
-        retry=retry_if_not_exception_type((ValidationError, NotAuthorizedException)),
+        retry=retry_if_not_exception_type(
+            (ValidationError, NotAuthorizedException, RateLimitException)
+        ),
     )
     async def get_charge_point_transactions(
         self, charge_point_id: str
@@ -395,7 +428,9 @@ class Evnex:
 
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
-        retry=retry_if_not_exception_type((ValidationError, NotAuthorizedException)),
+        retry=retry_if_not_exception_type(
+            (ValidationError, NotAuthorizedException, RateLimitException)
+        ),
     )
     async def get_charge_point_sessions(
         self, charge_point_id: str
@@ -410,7 +445,12 @@ class Evnex:
     @retry(
         wait=wait_random_exponential(multiplier=1, max=60),
         retry=retry_if_not_exception_type(
-            (ValidationError, NotAuthorizedException, ReadTimeout)
+            (
+                ValidationError,
+                NotAuthorizedException,
+                RateLimitException,
+                ReadTimeout,
+            )
         ),
     )
     async def stop_charge_point(
