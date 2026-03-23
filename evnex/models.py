@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from httpx import Headers
 
 
 @dataclass
@@ -10,6 +11,13 @@ class EvnexModelInfo:
     power: str = "N/A"  # Only for X-series
     power_sensor: str = "N/A"  # Only for X-series
     configuration: str = "N/A"  # Only for X-series
+
+
+@dataclass
+class EvnexRateLimit:
+    limit: int
+    remaining: int
+    reset: int
 
 
 # Lookup tables
@@ -128,3 +136,14 @@ def parse_model(model_id: str) -> EvnexModelInfo:
 
     # Unknown series
     return EvnexModelInfo("Unknown", "Unknown", "Unknown", "Unknown")
+
+
+def parse_rate_limit(headers: Headers) -> EvnexRateLimit | None:
+    limit = headers.get("x-ratelimit-limit")
+    remaining = headers.get("x-ratelimit-remaining")
+    reset = headers.get("x-ratelimit-reset")
+
+    if limit is None or remaining is None or reset is None:
+        return None
+
+    return EvnexRateLimit(limit=int(limit), remaining=int(remaining), reset=int(reset))
